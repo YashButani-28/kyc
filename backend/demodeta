@@ -1,0 +1,108 @@
+// {
+//   "users": [
+//     {
+//       "kycForms": {
+//         "form1": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form2": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form3": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form4": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         }
+//       },
+//       "id": "f2cc"
+//     },
+//     {
+//       "id": "958097",
+//       "name": "Hiten Makavana",
+//       "email": "Hitem.m@gmail.com",
+//       "contact_no": "1234567890",
+//       "role": "Admin",
+//       "password": "Hiten@123",
+//       "kycForms": {
+//         "form1": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form2": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form3": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         },
+//         "form4": {
+//           "field1": "value1",
+//           "field2": "value2"
+//         }
+//       },
+//     },
+//     {
+//       "id": "699190",
+//       "name": "YashButani",
+//       "email": "Yash@123",
+//       "contact_no": "212132",
+//       "role": "Admin",
+//       "password": "Yash1222"
+//     },
+//     {
+//       "id": "329861",
+//       "role": "Admin",
+//       "name": "Anish",
+//       "email": "anish@gmail.com",
+//       "contact_no": "21221112212",
+//       "password": "anish@123"
+//     },
+//     {
+//       "id": "889284",
+//       "role": "Admin",
+//       "name": "Yash Babariya",
+//       "email": "babariya@gmail.com",
+//       "contact_no": "82828128172",
+//       "password": "babariya@123"
+//     },
+//     {
+//       "id": 8,
+//       "role": "Admin",
+//       "name": "555",
+//       "email": "555@555.com",
+//       "contact_no": "5555555555",
+//       "password": "55555555"
+//     },
+//     {
+//       "id": 9,
+//       "role": "Admin",
+//       "name": "6666",
+//       "email": "6666@66.com",
+//       "contact_no": "6666666666",
+//       "password": "6666666"
+//     },
+//     {
+//       "id": 9,
+//       "role": "Admin",
+//       "name": "7777",
+//       "email": "777@77.com",
+//       "contact_no": "7777777777",
+//       "password": "7777777"
+//     },
+//     {
+//       "id": 9,
+//       "role": "Admin",
+//       "name": "888",
+//       "email": "888@gmai.omc",
+//       "contact_no": "888888888888",
+//       "password": "888888"
+//     }
+//   ],
+//   "currentUser": "user1"
+// }
