@@ -162,47 +162,49 @@ export const generateXML = (formDetails1) => {
 // Generate Excel sheet 
 
 
+
 export const generateExcel = (formDetails1) => {
-  if (!formDetails1) {
+  if (!formDetails1 || Object.keys(formDetails1).length === 0) {
     console.error("No form data available to download.");
     return;
   }
 
   const data = [];
-
-  const sectionTitles = {
-    form1: "Basic Details :-",
-    form2: "Terms Details :-",
-    form3: "User Details :-",
-    form4: "Address Details :-"
-  };
-
+  
+  // Header for the Excel sheet
   const headers = ["KYC Form :-"];
   data.push(headers);
-  data.push([]); 
+  data.push([]);  // Empty row to separate the header
 
-
+  // Form sections to iterate through
   const formSections = ['form1', 'form2', 'form3', 'form4'];
 
   formSections.forEach((formKey) => {
-    const formData = formDetails1[formKey]; 
+    const formData = formDetails1[formKey];
     if (formData && typeof formData === "object") {
-      data.push([sectionTitles[formKey] || formKey, ""]);
-  data.push([]); 
+      // Add section title
+      data.push([sectionTitles[formKey] || formKey]);
+      data.push([]);  // Empty row to separate sections
 
+      // Get non-empty entries for the form
+      const nonEmptyEntries = getNonEmptyEntries(formData);
 
-      Object.entries(formData).forEach(([key, value]) => {
-        data.push([key, value || ""]); 
+      // Add each entry (key-value pair) to the Excel data
+      nonEmptyEntries.forEach(({ key, value }) => {
+        data.push([key, value || ""]);  // If value is null or undefined, set empty string
       });
 
-      data.push([]); 
+      data.push([]);  // Empty row after each form section
     }
   });
 
+  // Convert the data array to a worksheet
   const ws = XLSX.utils.aoa_to_sheet(data);
 
+  // Create a new workbook and append the worksheet
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "KYC Report");
 
+  // Write the Excel file
   XLSX.writeFile(wb, "KYC_Report.xlsx");
 };
