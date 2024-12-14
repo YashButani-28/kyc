@@ -142,67 +142,143 @@ export const resetSpecificForm = (formId) => async (dispatch) => {
   }
 };
 
+
+
 export const dataTransmit = (userId) => async (dispatch, getState) => {
   try {
+    // Mark form submission process as started
     dispatch(setSubmitForm(true));
 
+    // Fetch Redux state and extract form data
     const state = getState();
     const forms = state.forms.kycForms;
 
-    if (forms) {
-      const response = await axios.get("http://localhost:3000/users");
-      const users = response.data;
-      const user = users.find((user) => user.id == userId);
-
-      if (user) {
-        const usersId = user.id;
-
-        // Generate a unique key
-        let randomDigit = 1011;
-        let applicationKey = `APP${randomDigit}`;
-        const userKeys = Object.keys(user).filter((key) =>
-          key.startsWith("APP")
-        );
-
-        // Find the highest existing APP key and increment it
-        if (userKeys.length > 0) {
-          const applicationKey = userKeys[0];
-          const highestKey = Math.max(
-            ...userKeys.map((key) => Number(key.slice(3), 10)) // Extract number part and convert to integer
-          );
-          randomDigit = highestKey + 1;
-          applicationKey = `APP${randomDigit}`;
-        }
-        console.log("kyckey", applicationKey);
-
-        const newUser = {
-          ...user,
-          [applicationKey]: { ...forms },
-        };
-        console.log("kyckey", newUser);
-
-        // Send POST request to save the new data
-        const postResponse = await axios.put(
-          `http://localhost:3000/users/${usersId}`,
-          newUser
-        );
-
-        console.log("New user data created successfully:", postResponse.data);
-        dispatch(clearFormData());
-
-        console.log(
-          `All form data exported under key ${applicationKey} successfully!`
-        );
-      } else {
-        console.error(`User with ID ${userId} not found.`);
-      }
-    } else {
-      console.error("No form data found in the state.");
+    if (!forms) {
+      console.error("No form data found in the Redux state.");
+      return;
     }
+
+    // Fetch all users from the server
+    const response = await axios.get("http://localhost:3000/users");
+    const users = response.data;
+
+    // Find the user with the given userId
+    const user = users.find((user) => user.id == userId);
+    if (!user) {
+      console.error(`User with ID ${userId} not found.`);
+      return;
+    }
+
+    const existingUserId = user.id;
+
+    // Generate a unique key for the application
+    const applicationKey = generateUniqueKey(user);
+
+    console.log("Generated application key:", applicationKey);
+
+    // Create a new user object with the form data attached
+    const updatedUser = {
+      ...user,
+      [applicationKey]: { ...forms },
+    };
+
+    console.log("Updated user data:", updatedUser);
+
+    // Send PUT request to update the user on the server
+    const postResponse = await axios.put(
+      `http://localhost:3000/users/${existingUserId}`,
+      updatedUser
+    );
+
+    console.log("User data updated successfully:", postResponse.data);
+
+    // Clear form data in Redux state
+    dispatch(clearFormData());
+    console.log(`All form data exported successfully under key: ${applicationKey}`);
   } catch (error) {
-    console.error("Failed to export form data:", error);
+    console.error("Failed to transmit form data:", error);
   }
 };
+
+// Helper function to generate a unique key
+const generateUniqueKey = (user) => {
+  let randomDigit = 1011;
+  const userKeys = Object.keys(user).filter((key) => key.startsWith("APP"));
+
+  if (userKeys.length > 0) {
+    const highestKey = Math.max(
+      ...userKeys.map((key) => Number(key.slice(3)))
+    );
+    randomDigit = highestKey + 1;
+  }
+
+  return `APP${randomDigit}`;
+};
+
+
+
+
+// export const dataTransmit = (userId) => async (dispatch, getState) => {
+//   try {
+//     dispatch(setSubmitForm(true));
+
+//     const state = getState();
+//     const forms = state.forms.kycForms;
+
+//     if (forms) {
+//       const response = await axios.get("http://localhost:3000/users");
+//       const users = response.data;
+//       const user = users.find((user) => user.id == userId);
+
+//       if (user) {
+//         const usersId = user.id;
+
+//         // Generate a unique key
+//         let randomDigit = 1011;
+//         let applicationKey = `APP${randomDigit}`;
+//         const userKeys = Object.keys(user).filter((key) =>
+//           key.startsWith("APP")
+//         );
+
+//         // Find the highest existing APP key and increment it
+//         if (userKeys.length > 0) {
+//           const applicationKey = userKeys[0];
+//           const highestKey = Math.max(
+//             ...userKeys.map((key) => Number(key.slice(3), 10)) // Extract number part and convert to integer
+//           );
+//           randomDigit = highestKey + 1;
+//           applicationKey = `APP${randomDigit}`;
+//         }
+//         console.log("kyckey", applicationKey);
+
+//         const newUser = {
+//           ...user,
+//           [applicationKey]: { ...forms },
+//         };
+//         console.log("kyckey", newUser);
+
+//         // Send POST request to save the new data
+//         const postResponse = await axios.put(
+//           `http://localhost:3000/users/${usersId}`,
+//           newUser
+//         );
+
+//         console.log("New user data created successfully:", postResponse.data);
+//         dispatch(clearFormData());
+
+//         console.log(
+//           `All form data exported under key ${applicationKey} successfully!`
+//         );
+//       } else {
+//         console.error(`User with ID ${userId} not found.`);
+//       }
+//     } else {
+//       console.error("No form data found in the state.");
+//     }
+//   } catch (error) {
+//     console.error("Failed to export form data:", error);
+//   }
+// };
 
 export const clearAllFormData = (userId, key) => async () => {
   try {
