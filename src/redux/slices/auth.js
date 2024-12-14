@@ -38,7 +38,6 @@ const authSlice = createSlice({
 
     registerSuccess(state, action) {
       state.registrationData = [...state.registrationData, action.payload];
-      // console.log("New user added:", action.payload);
       state.isLoading = false;
     },
 
@@ -86,7 +85,6 @@ export const {
 } = authSlice.actions;
 
 export const fetchData = () => async (dispatch) => {
-  // dispatch(startLoading());
   try {
     const response = await axios.get("/users");
     dispatch(registerSuccess(response.data));
