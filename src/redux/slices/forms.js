@@ -65,23 +65,23 @@ const formSlice = createSlice({
       }
     },
 
-    extraReducers: (builder) => {
-      builder
+  },
+  extraReducers: (builder) => {
+    builder
 
-        .addCase(fetchFormDetails.pending, (state) => {
-          state.isLoading = true;
-          state.error = null;
-        })
+      .addCase(fetchFormDetails.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
 
-        .addCase(fetchFormDetails.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.error = null;
-        })
-        .addCase(fetchFormDetails.rejected, (state, action) => {
-          state.isLoading = false;
-          state.error = action.payload;
-        });
-    },
+      .addCase(fetchFormDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(fetchFormDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
